@@ -34,7 +34,7 @@ mean green buildings: 30.016.
 We see the distributions of all rent and green building rent are not normally distributed. It is heavily skewed to the left due to a few very large rent outliers. 
 ```{r, echo=FALSE}
 library(RCurl)
-green <- read.csv('greenbuildings.csv')
+green <- read.csv("C:/Users/Sophia Scott/Documents/a.STA 380 MACHINE LEARNING/PART 2/greenbuildings.csv")
 green <- na.omit(green)
 attach(green)
 
@@ -305,7 +305,7 @@ The most prominenent reason for delays is due to carrier issues followed by weat
 ## Figure 2
 
 ##Which days of the week in each month typically have the longest delay times? 
-```{r q2 echo = FALSE}
+```{r q2, echo = FALSE}
 
 #create summary grouping the days of the week and month
 #use summarize at function to apply function to one column
@@ -517,7 +517,7 @@ rm(list = ls())
 ```
 
 ## loading libraries and dataset
-```{r q4 echo = FALSE}
+```{r q4, echo = FALSE}
 #libraries used 
 library(cluster)
 library(FactoMineR)
@@ -545,7 +545,7 @@ the 'columns chatter', 'photo_sharing', and 'uncategorized' were removed so bran
 
 
 ## correlation of variables 
-```{r q4 echo = FALSE}
+```{r q4, echo = FALSE}
 #correlation of variables 
 # Loading
 library(ggcorrplot)
@@ -557,7 +557,7 @@ where there is similarity is between a few clusters mostly between the columns o
 
 
 ## Initial PCA model 
-```{r}
+```{r, echo = FALSE}
 pr_out <-prcomp(clean, center = TRUE, scale = TRUE) 
 summary(pr_out)
 plot(pr_out, main = 'PCA', xlab = "Principal Components", type = 'b')
@@ -584,7 +584,7 @@ The graph
 The Variance Explained by PCA graph gives a better look into how many Principal Componenets are useful to include in our analysis until the utility of an additional variable plummets. Here we can see that around 10 PCAs hold the most useful information. 
 
 ## Further PCA Analysis: specific factors 
-```{r q4 echo = FALSE}
+```{r q4, echo = FALSE}
 
 #not including chatter to help get insighful information 
 PCA.twit = prcomp(clean, scale=TRUE)
@@ -616,20 +616,20 @@ are related and hold significant information to the model
  - outdoors 
 are related and hold (2nd best) significant information to the model 
 
-```{r q4 echo = FALSE}
+```{r q4, echo = FALSE}
 
 var <- get_pca_var(PCA.twit)
 var
 
 eig.val.twitter <- get_eigenvalue(PCA.twit)
 eig.val.twitter
-fviz_eig(PCA.twitter, addlabels = TRUE, ylim = c(0, 30))
+fviz_eig(PCA.twit, addlabels = TRUE, ylim = c(0, 30))
 head(var$contrib, 15)
 
 # Contributions of variables to PC1
-fviz_contrib(PCA.twitter, choice = "var", axes = 1, top = 10)
+fviz_contrib(PCA.twit, choice = "var", axes = 1, top = 10)
 # Contributions of variables to PC2
-fviz_contrib(PCA.twitter, choice = "var", axes = 2, top = 10)
+fviz_contrib(PCA.twit, choice = "var", axes = 2, top = 10)
 
 ```
 Dimension 1 and 2 have stayed consistent in which variables are included in holding the most information 
@@ -637,7 +637,7 @@ the eigen value is used to show which dimensions hold the most importance where 
 around the dimension of 8-9 the usefulness of the dimensions begins to tapper off 
 
 ## Kmeans Cluster Analysis with the dataset values
-```{r}
+```{r, echo = FALSE}
 
 #cluster analysis 
 twitter.k5 = kmeans(clean, centers = 5, nstart = 25)
@@ -646,14 +646,14 @@ twitter.k9 = kmeans(clean, centers = 9, nstart = 25)
 twitter.k9
 
 
-plot_k9 = clusplot(twitter.ai, twitter.k9$cluster, color=T, shade=F, labels=4, lines=0, main="K-means cluster plot")
+plot_k9 = clusplot(clean, twitter.k9$cluster, color=T, shade=F, labels=4, lines=0, main="K-means cluster plot")
 plot_k9
 ```
 5 clusters helps explain 40% of the data while 9 clusters helps explain 52% of the data
 However, the clusters are incredibly overlapped using component 1 and 2 (PCA 1 and 2)
 
 #K Means CLuster Analysis with PCA 
-```{r}
+```{r, echo = FALSE}
 # Center and scale the data
 install.packages('LICORS')
 library(LICORS) 
@@ -719,7 +719,7 @@ rm(list = ls())
 ```
 
 ## Reading in C50 train files and cleaning them
-```{r q5 echo = FALSE}
+```{r q5, echo = FALSE}
 install.packages('tm')
 install.packages('proxy')
 library(tm)
@@ -801,7 +801,7 @@ train_matrix = as.matrix(tfidf_train)
 
 
 ## Reading in the C50 test files and cleaning them 
-```{r q5 echo = FALSE}
+```{r q5, echo = FALSE}
 #reading in testing file information
 test=Sys.glob('C:/Users/Sophia Scott/Documents/a.STA 380 MACHINE LEARNING/PART 2/ReutersC50/C50test/*')
 
@@ -849,7 +849,7 @@ test_matrix<-as.matrix(tfidf_test)
 
 
 ## Running PCA on the training data
-```{r q5 echo = FALSE}
+```{r q5, echo = FALSE}
 ##PCA
 train_matrix_1<-train_matrix[,which(colSums(train_matrix) != 0)] 
 test_matrix_1<-test_matrix[,which(colSums(test_matrix) != 0)]
@@ -888,12 +888,12 @@ The PCA helps show how many components are useful to refer to in our training da
 The graph 'proportion of cumsum var explained' or the variance explained by each PCA factor is used to pinpoint 80% accuracy and how many componenets it will tae to acheive such result 
 
 ## Running Naive Bayes and Random Forests to Compare Prediction Accuracy
-```{r q5 echo = FALSE}
+```{r q5, echo = FALSE}
 #naive bayes 
 install.packages("e1071", dep = TRUE) 
 library('e1071')
 
-naive=naiveBayes(Authors~.,data=pca_df)
+naive=naiveBayes(as.factor(author)~.,data=train_class)
 pred_naive=predict(naive,test_class)
 
 library(caret)
@@ -911,8 +911,8 @@ accuracyNB
 #Random Forest
 library(randomForest)
 
-rf = randomForest(Authors~.,data=pca_df)
-CM = table(predict(rf), pca_df$Author)
+rf = randomForest(as.factor(author)~.,data=train_class)
+CM = table(predict(rf), train_class$author)
 accuracyRF = (sum(diag(CM)))/sum(CM)
 print("the accuracy for Random Forests:") 
 accuracyRF
@@ -924,7 +924,7 @@ The random forests prediction accuracy is much higher than Naive Bayes, therefor
 
 
 
-# Association rule mining
+#6:  Association rule mining
 goals: find interesting association rules for the baskets, pick thresholds for lift & confidence
 
 Increasing the confidence level gives you stronger rules (this WILL happen)
@@ -946,7 +946,7 @@ library(plyr)
 library(dplyr)
 
 #set up the grocery file for basket analysis
-groceries = scan("groceries.txt", what = "", sep = "\n") #9835 items 
+groceries = scan("C:/Users/Sophia Scott/Documents/a.STA 380 MACHINE LEARNING/PART 2/groceries.txt", what = "", sep = "\n") #9835 items 
 groceries = strsplit(groceries, ",")
 transactions = as(groceries, "transactions")
 summary(transactions)
