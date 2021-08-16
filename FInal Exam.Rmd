@@ -266,10 +266,7 @@ library(stats)
 #read in ABIA dataset 
 library(readr)
 ABIA <- read_csv("C:/Users/Sophia Scott/Documents/a.STA 380 MACHINE LEARNING/PART 2/ABIA.csv")
-View(ABIA)
 
-#remove Nas 
-na.omit(ABIA)
 
 ```
 
@@ -529,12 +526,12 @@ library(tidyverse)
 #reading in social_marketing data
 library(readr)
 social_marketing <- read_csv("C:/Users/Sophia Scott/Documents/a.STA 380 MACHINE LEARNING/PART 2/social_marketing.csv")
-View(social_marketing)
+
 #PreProcessing 
 mkt = social_marketing[social_marketing$spam == 0 & social_marketing$adult == 0, ]
 mkt = mkt %>%
   select(-chatter, -photo_sharing, - uncategorized)
-View(mkt)
+
 clean = mkt[,2:32]
 
 ```
@@ -659,7 +656,7 @@ install.packages('LICORS')
 library(LICORS) 
 
 X = as.data.frame(PCA.twit$x[, 1:11])
-View(X)
+
 X_scaled = scale(X, center=TRUE, scale=TRUE)
 
 mu = attr(X_scaled,"scaled:center")
@@ -871,7 +868,7 @@ segments(x0=300, y0=0, x1= 300, y1=.8) # segments from x axis to points
 segments(x0=0, y0=.8, x1=300, y1=.8) 
 
 sort(PCA_train$x, decreasing = TRUE)
-View(PCA_train$x)
+
 
 #Creating the training and test sets 
 train_class = data.frame(PCA_train$x[,1:300])
@@ -880,8 +877,6 @@ tr_load = PCA_train$rotation[,1:300]
 test_class.pre <- scale(test_matrix_1) %*% tr_load
 test_class <- as.data.frame(test_class.pre)
 test_class['author']=labels2
-View(train_class)
-View(test_class)
 
 ```
 The PCA helps show how many components are useful to refer to in our training data
